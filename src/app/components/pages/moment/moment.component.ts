@@ -5,6 +5,12 @@ import { MomentService } from 'src/app/services/moment.service';
 
 import { Moment } from 'src/app/Moment';
 
+import { Comment } from 'src/app/Comment';
+
+import { CommentService } from 'src/app/services/comment.service';
+
+import { FormGroup, FormControl, Validator, FormGroupDirective, Validators } from '@angular/forms';
+
 import { environment } from 'src/environments/environment';
 
 import { faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -23,11 +29,14 @@ export class MomentComponent {
   faTimes = faTimes;
   faEdit = faEdit;
 
+  commentForm!: FormGroup
+
   constructor(
     private momentService: MomentService,
     private route: ActivatedRoute,
     private messagesService: MessagesService,
-    private router: Router) { }
+    private router: Router,
+    private commentService: CommentService) { }
 
   ngOnInit(): void{
     //id que está na url
@@ -36,6 +45,19 @@ export class MomentComponent {
     this.momentService
     .getMoment(id)
     .subscribe((item) => (this.moment = item.data));
+
+    this.commentForm = new FormGroup({
+      text: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
+    });
+  }
+
+  get text() {
+    return this.commentForm.get('text')!;
+  }
+
+  get username(){
+    return this.commentForm.get('username')!; 
   }
 
   async removeHandler(id: number) {
@@ -44,6 +66,10 @@ export class MomentComponent {
     this.messagesService.add("Momento excluído com sucesso!");
 
     this.router.navigate(['/']);
+  }
+
+  onSubmit(formDirective: FormGroupDirective){
+
   }
 
 }
