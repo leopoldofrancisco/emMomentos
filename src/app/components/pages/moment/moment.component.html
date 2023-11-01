@@ -22,15 +22,10 @@
             }}):
         </h3>
 
-        <!--<div *ngIf="moment.comments!.length > 0; else noComments">-->
-        <div>
+        <div *ngIf="moment.comments!.length > 0; else noComments">
             <div class="comment-container" *ngFor="let comment of moment.comments">
                 <p class="comment">{{ comment.text }}</p>
                 <p class="author"><span>por:</span>{{ comment.username }}</p>
-            </div>
-            <div class="comment-container">
-                <p class="comment">Texto do comentário</p>
-                <p class="author"><span>por:</span>Leopoldo</p>
             </div>
         </div>
         <ng-template #noComments>
