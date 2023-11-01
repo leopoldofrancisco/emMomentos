@@ -68,8 +68,26 @@ export class MomentComponent {
     this.router.navigate(['/']);
   }
 
-  onSubmit(formDirective: FormGroupDirective){
+  async onSubmit(formDirective: FormGroupDirective){
 
+    if(this.commentForm.invalid){
+      return
+    }
+
+    const data: Comment = this.commentForm.value;
+
+    data.momentId = Number(this.moment!.id);
+
+    await this.commentService
+    .createComment(data)
+    .subscribe((comment) => this.moment!.comments!.push(comment.data));
+
+    this.messagesService.add("Comentário Adicionado!");
+
+    //Limpar o formulário
+    this.commentForm.reset();
+
+    formDirective.resetForm();
   }
 
 }
